@@ -1,0 +1,6 @@
+domain,relationship,pearson_r,spearman_r,n_samples
+Biochem,signal vs concentration,0.999319,0.948683,9
+Electronics,signal vs load,-0.98453,-0.948683,9
+Electronics,signal vs temperature,-0.991995,-0.974824,9
+Mechanical,signal vs load,0.98407,0.948683,9
+Mechanical,stress_mpa vs load,0.984291,0.948683,9

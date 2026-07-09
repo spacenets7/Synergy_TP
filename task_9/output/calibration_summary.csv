@@ -1,0 +1,6 @@
+domain,relationship,pearson_r,spearman_r,slope,intercept,r_squared,mae,rmse,n_samples
+Biochem,signal vs concentration,0.999319,0.948683,0.981967,0.019617,0.998639,0.011245,0.013347,9
+Electronics,signal vs load,-0.98453,-0.948683,-0.023476,5.153333,0.9693,0.037884,0.052109,9
+Electronics,signal vs temperature,-0.991995,-0.974824,-0.051953,6.764472,0.984054,0.026689,0.037555,9
+Mechanical,signal vs load,0.98407,0.948683,0.013733,-0.21,0.968394,0.077778,0.101288,9
+Mechanical,stress_mpa vs load,0.984291,0.948683,1.64,-5.333333,0.96883,9.407407,12.009256,9

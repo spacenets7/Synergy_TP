@@ -1,0 +1,10 @@
+domain,condition,input_type,input_value,input_unit,signal_unit,replicate_count,mean_signal,median_signal,variance_signal,standard_deviation_signal,standard_error_signal,confidence_interval_lower,confidence_interval_upper,coefficient_of_variation,minimum_signal,maximum_signal,stability_flag
+Biochem,high_concentration,concentration,1.0,mM,absorbance,3,1.003333,1.01,0.00043333,0.020817,0.012019,0.951622,1.055045,0.020748,0.98,1.02,stable
+Biochem,low_concentration,concentration,0.1,mM,absorbance,3,0.12,0.12,0.0001,0.01,0.005774,0.095159,0.144841,0.083333,0.11,0.13,moderate
+Biochem,medium_concentration,concentration,0.5,mM,absorbance,3,0.506667,0.51,0.00023333,0.015275,0.008819,0.468721,0.544612,0.030149,0.49,0.52,stable
+Electronics,high_load,load,40.0,ohm,V,3,4.216667,4.25,0.01083333,0.104083,0.060093,3.958109,4.475224,0.024684,4.1,4.3,stable
+Electronics,low_load,load,10.0,ohm,V,3,4.923333,4.92,0.00063333,0.025166,0.01453,4.860817,4.985849,0.005112,4.9,4.95,stable
+Electronics,medium_load,load,20.0,ohm,V,3,4.676667,4.68,0.00063333,0.025166,0.01453,4.614151,4.739183,0.005381,4.65,4.7,stable
+Mechanical,high_load,load,150.0,N,mm,3,1.883333,1.8,0.03583333,0.189297,0.109291,1.413094,2.353573,0.100512,1.75,2.1,moderate
+Mechanical,low_load,load,50.0,N,mm,3,0.51,0.51,0.0001,0.01,0.005774,0.485159,0.534841,0.019608,0.5,0.52,stable
+Mechanical,medium_load,load,100.0,N,mm,3,1.096667,1.1,0.00023333,0.015275,0.008819,1.058721,1.134612,0.013929,1.08,1.11,stable
