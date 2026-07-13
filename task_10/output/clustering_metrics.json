@@ -1,0 +1,25 @@
+{
+    "features": [
+        "PT08.S1(CO)",
+        "PT08.S2(NMHC)",
+        "PT08.S3(NOx)",
+        "PT08.S4(NO2)",
+        "PT08.S5(O3)",
+        "T",
+        "RH",
+        "AH"
+    ],
+    "k": 3,
+    "metrics": {
+        "inertia": 20153.0969,
+        "silhouette_score": 0.257305,
+        "cluster_counts": {
+            "0": 1892,
+            "1": 1589,
+            "2": 1377
+        },
+        "n_clusters": 3,
+        "n": 4858
+    },
+    "n_iters": 15
+}
