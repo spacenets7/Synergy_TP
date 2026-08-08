@@ -1,0 +1,6 @@
+Model,Train Acc,Val Acc,Val Precision,Val Recall,Val F1
+Dummy (majority),0.0455,0.0455,0.0021,0.0455,0.004
+Logistic Regression,0.9727,0.9758,0.9778,0.9758,0.9762
+KNN (k=5),0.9831,0.9667,0.9716,0.9667,0.9667
+Decision Tree,1.0,0.9909,0.9911,0.9909,0.9909
+Random Forest,1.0,0.997,0.9972,0.997,0.997

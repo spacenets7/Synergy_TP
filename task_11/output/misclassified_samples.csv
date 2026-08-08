@@ -1,0 +1,3 @@
+N,P,K,temperature,humidity,ph,rainfall,actual,predicted,correct
+67.0,43.0,39.0,26.04371967,84.96907151,5.9999690260000005,186.7536773,rice,jute,False
+60.0,59.0,22.0,31.86847286,66.74217464,7.191522601,74.22238583,blackgram,maize,False
