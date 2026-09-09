@@ -1,21 +1,3 @@
-"""
-train.py
---------
-Full training pipeline for Task 13 MLP.
-
-Trains and evaluates:
-  1. Logistic Regression baseline
-  2. NumPy MLP (from scratch)
-  3. PyTorch MLP without dropout
-  4. PyTorch MLP with dropout (regularization experiment)
-
-Run from Synergy_TP root:
-    python task_13/src/train.py
-
-Or with custom paths:
-    python task_13/src/train.py --data task_13/data/bank-additional-full.csv
-"""
-
 import os, sys, json, argparse, warnings, time
 import numpy as np
 import matplotlib
@@ -39,7 +21,6 @@ from pytorch_mlp import PyTorchMLP, PyTorchTrainer
 
 warnings.filterwarnings("ignore")
 
-# ── Paths ──────────────────────────────────────────────────────────────────────
 BASE      = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DATA_PATH = os.path.join(BASE, "data", "bank-additional-full.csv")
 PROC_DIR  = os.path.join(BASE, "data", "processed")
@@ -51,7 +32,6 @@ os.makedirs(MODEL_DIR, exist_ok=True)
 DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
 
 
-# ── Metrics helper ─────────────────────────────────────────────────────────────
 def compute_metrics(y_true: np.ndarray, y_pred: np.ndarray,
                     y_prob: np.ndarray, name: str) -> dict:
     m = {
@@ -68,9 +48,8 @@ def compute_metrics(y_true: np.ndarray, y_pred: np.ndarray,
     return m
 
 
-# ── Plot helpers ───────────────────────────────────────────────────────────────
 def plot_loss_curves(histories: dict, path: str) -> None:
-    """Plot train/val loss curves for multiple models side by side."""
+    
     n     = len(histories)
     fig, axes = plt.subplots(1, n, figsize=(6 * n, 4), sharey=False)
     if n == 1:
@@ -92,7 +71,7 @@ def plot_loss_curves(histories: dict, path: str) -> None:
 
 
 def plot_metric_comparison(all_metrics: list[dict], path: str) -> None:
-    """Bar chart comparing all models on key metrics."""
+    
     metrics_to_plot = ["accuracy", "precision", "recall", "f1", "roc_auc"]
     names  = [m["model"] for m in all_metrics]
     x      = np.arange(len(names))
@@ -123,7 +102,7 @@ def plot_metric_comparison(all_metrics: list[dict], path: str) -> None:
 
 
 def plot_dropout_experiment(no_drop: dict, with_drop: dict, path: str) -> None:
-    """Side-by-side loss curves for dropout experiment."""
+    
     fig, axes = plt.subplots(1, 2, figsize=(13, 4))
 
     for ax, (name, h) in zip(axes, [
@@ -134,7 +113,7 @@ def plot_dropout_experiment(no_drop: dict, with_drop: dict, path: str) -> None:
         ax.plot(epochs, h["train"], label="Train BCE", color="#4C72B0", lw=1.5)
         ax.plot(epochs, h["val"],   label="Val BCE",   color="#DD8452", lw=1.5)
 
-        # Gap between train and val (overfitting signal)
+       
         gap = [tr - va for tr, va in zip(h["train"], h["val"])]
         ax.fill_between(epochs,
                         h["train"], h["val"],
@@ -152,13 +131,13 @@ def plot_dropout_experiment(no_drop: dict, with_drop: dict, path: str) -> None:
     print(f"  [plot] {os.path.basename(path)} saved.")
 
 
-# ── Main ───────────────────────────────────────────────────────────────────────
+
 def main(data_path: str) -> None:
     print("=" * 65)
     print("  Task 13 — Bank Marketing MLP Classification")
     print("=" * 65)
 
-    # ── 1. Preprocess ─────────────────────────────────────────────────────────
+    
     splits = run_preprocessing(data_path, PROC_DIR)
     X_tr = splits["X_tr"]; y_tr = splits["y_tr"]
     X_va = splits["X_va"]; y_va = splits["y_va"]
@@ -170,7 +149,7 @@ def main(data_path: str) -> None:
     all_metrics = []
     loss_histories = {}
 
-    # ── 2. Logistic Regression baseline ──────────────────────────────────────
+    
     print("\n" + "─" * 65)
     print("  [1/4] Logistic Regression Baseline")
     t0  = time.time()
@@ -187,7 +166,6 @@ def main(data_path: str) -> None:
     print(f"  F1={lr_metrics['f1']:.4f}  AUC={lr_metrics['roc_auc']:.4f}")
     joblib.dump(lr_clf, os.path.join(MODEL_DIR, "logistic_regression.joblib"))
 
-    # ── 3. NumPy MLP ─────────────────────────────────────────────────────────
     print("\n" + "─" * 65)
     print("  [2/4] NumPy MLP (from scratch)")
     t0 = time.time()
@@ -213,7 +191,7 @@ def main(data_path: str) -> None:
     print(f"  F1={np_metrics['f1']:.4f}  AUC={np_metrics['roc_auc']:.4f}")
     np_mlp.save(os.path.join(MODEL_DIR, "numpy_mlp.npz"))
 
-    # ── 4. PyTorch MLP — No Dropout ──────────────────────────────────────────
+    
     print("\n" + "─" * 65)
     print("  [3/4] PyTorch MLP — No Dropout")
     t0 = time.time()
@@ -244,7 +222,7 @@ def main(data_path: str) -> None:
     print(f"  F1={nd_metrics['f1']:.4f}  AUC={nd_metrics['roc_auc']:.4f}")
     pt_trainer_nd.save(os.path.join(MODEL_DIR, "pytorch_mlp_no_dropout.pt"))
 
-    # ── 5. PyTorch MLP — With Dropout ────────────────────────────────────────
+    
     print("\n" + "─" * 65)
     print("  [4/4] PyTorch MLP — With Dropout (p=0.3)")
     t0 = time.time()
@@ -276,13 +254,13 @@ def main(data_path: str) -> None:
     print(f"  F1={wd_metrics['f1']:.4f}  AUC={wd_metrics['roc_auc']:.4f}")
     pt_trainer_wd.save(os.path.join(MODEL_DIR, "pytorch_mlp_dropout.pt"))
 
-    # ── 6. Save metrics ───────────────────────────────────────────────────────
+    
     metrics_path = os.path.join(OUT_DIR, "all_metrics.json")
     with open(metrics_path, "w", encoding="utf-8") as f:
         json.dump(all_metrics, f, indent=4)
     print(f"\n  [saved] all_metrics.json")
 
-    # ── 7. Plots ──────────────────────────────────────────────────────────────
+    
     print("\n[Plotting]")
     plot_loss_curves(
         loss_histories,
@@ -298,7 +276,7 @@ def main(data_path: str) -> None:
         os.path.join(OUT_DIR, "dropout_experiment.png"),
     )
 
-    # ── 8. Final summary ──────────────────────────────────────────────────────
+    
     print("\n" + "=" * 65)
     print("  FINAL RESULTS — TEST SET")
     print("=" * 65)

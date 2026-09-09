@@ -1,22 +1,3 @@
-"""
-inference.py
-------------
-Standalone inference script. Loads saved models and predicts
-on a single raw input row or a CSV file.
-
-Run from Synergy_TP root:
-    python task_13/src/inference.py                        # built-in sample
-    python task_13/src/inference.py --csv path/to/file.csv # batch from CSV
-    python task_13/src/inference.py --model numpy          # choose model
-    python task_13/src/inference.py --model pytorch_dropout
-
-Available --model options:
-    logistic   (default)
-    numpy
-    pytorch_nodrop
-    pytorch_dropout
-"""
-
 import os, sys, json, argparse
 import numpy as np
 import pandas as pd
@@ -34,10 +15,8 @@ MODEL_DIR = os.path.join(BASE, "models")
 DEVICE    = "cuda" if torch.cuda.is_available() else "cpu"
 
 
-# ── Load preprocessing artifacts ──────────────────────────────────────────────
-
 def load_preprocessing() -> tuple:
-    """Load scaler and feature names saved during training."""
+    
     scaler_path = os.path.join(PROC_DIR, "scaler.joblib")
     feat_path   = os.path.join(PROC_DIR, "feature_names.txt")
 
@@ -54,19 +33,12 @@ def load_preprocessing() -> tuple:
     return scaler, feature_names
 
 
-# ── Preprocess a raw DataFrame ─────────────────────────────────────────────────
+
 
 def preprocess_raw(df_raw: pd.DataFrame,
                    scaler,
                    feature_names: list[str]) -> np.ndarray:
-    """
-    Apply the same preprocessing pipeline used during training to a raw
-    input DataFrame:
-      1. Drop rows with 'unknown' in any categorical column.
-      2. One-hot encode categoricals.
-      3. Align columns to the training feature set (fill missing with 0).
-      4. Apply training scaler.
-    """
+   
     df = df_raw.copy()
 
     # Drop unknown rows
@@ -92,10 +64,10 @@ def preprocess_raw(df_raw: pd.DataFrame,
     return X
 
 
-# ── Load model ────────────────────────────────────────────────────────────────
+
 
 def load_model(model_name: str, n_features: int):
-    """Load and return the requested model. Returns a (predict_proba, label) tuple."""
+    
     name = model_name.lower()
 
     if name == "logistic":
@@ -141,10 +113,8 @@ def load_model(model_name: str, n_features: int):
     )
 
 
-# ── Built-in sample rows ───────────────────────────────────────────────────────
-
 SAMPLE_ROWS = [
-    # High-probability subscriber: older, longer call, previous success
+    
     {
         "age": 58, "job": "management", "marital": "married",
         "education": "university.degree", "default": "no",
@@ -155,7 +125,7 @@ SAMPLE_ROWS = [
         "cons.price.idx": 92.893, "cons.conf.idx": -46.2,
         "euribor3m": 1.299, "nr.employed": 5099.1,
     },
-    # Low-probability subscriber: young, short call, no previous contact
+   
     {
         "age": 28, "job": "blue-collar", "marital": "single",
         "education": "basic.9y", "default": "no",
@@ -170,7 +140,7 @@ SAMPLE_ROWS = [
 EXPECTED = ["yes (subscriber)", "no (non-subscriber)"]
 
 
-# ── Main ───────────────────────────────────────────────────────────────────────
+
 
 def main():
     parser = argparse.ArgumentParser(description="Bank Marketing inference script.")
@@ -195,7 +165,7 @@ def main():
     print(f"  Device          : {DEVICE}")
 
     if args.csv:
-        # ── Batch prediction from CSV ─────────────────────────────────────
+       
         print(f"\n  Reading: {args.csv}")
         df_input = pd.read_csv(args.csv, sep=";")
         X_input  = preprocess_raw(df_input, scaler, feature_names)
@@ -212,7 +182,7 @@ def main():
         print(out_df.head(10).to_string(index=False))
 
     else:
-        # ── Built-in sample predictions ───────────────────────────────────
+        
         print("\n  Running built-in sample predictions...")
         print(f"\n  {'Age':>4} {'Job':<14} {'Duration':>8} {'Poutcome':<12}"
               f"  {'Expected':<22} {'Predicted':<8} {'P(yes)':>7}")

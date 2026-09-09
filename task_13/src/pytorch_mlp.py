@@ -1,23 +1,10 @@
-"""
-pytorch_mlp.py
---------------
-Identical architecture to NumpyMLP, implemented in PyTorch.
-
-Architecture:
-    Input → Dense(64) → ReLU → Dropout(0.3) → Dense(32) → ReLU → Dropout(0.3) → Dense(1)
-
-Loss:      BCEWithLogitsLoss  (numerically more stable than BCE + Sigmoid)
-Optimizer: Adam
-Experiment: Dropout ON vs OFF  (controlled regularization comparison)
-"""
-
 import numpy as np
 import torch
 import torch.nn as nn
 from torch.utils.data import Dataset, DataLoader
 
 
-# ── Dataset wrapper ───────────────────────────────────────────────────────────
+
 
 class TabularDataset(Dataset):
     def __init__(self, X: np.ndarray, y: np.ndarray) -> None:
@@ -30,21 +17,8 @@ class TabularDataset(Dataset):
     def __getitem__(self, idx: int) -> tuple[torch.Tensor, torch.Tensor]:
         return self.X[idx], self.y[idx]
 
-
-# ── Model ─────────────────────────────────────────────────────────────────────
-
 class PyTorchMLP(nn.Module):
-    """
-    3-layer MLP with optional Dropout regularization.
-
-    With dropout=True:
-        Dense(64) → ReLU → Dropout(0.3) → Dense(32) → ReLU → Dropout(0.3) → Dense(1)
-    With dropout=False:
-        Dense(64) → ReLU → Dense(32) → ReLU → Dense(1)
-
-    Note: no Sigmoid in forward() because BCEWithLogitsLoss applies it
-    internally for numerical stability (log-sum-exp trick).
-    """
+    
 
     def __init__(
         self,
@@ -81,22 +55,10 @@ class PyTorchMLP(nn.Module):
         return self.fc3(x).squeeze(1)   # (batch,) — raw logits
 
 
-# ── Trainer ───────────────────────────────────────────────────────────────────
+
 
 class PyTorchTrainer:
-    """
-    Wraps a PyTorchMLP with a training loop, early stopping,
-    and metric tracking.
-
-    Parameters
-    ----------
-    model        : PyTorchMLP instance
-    lr           : Adam learning rate
-    batch_size   : mini-batch size
-    epochs       : maximum training epochs
-    patience     : early stopping patience (epochs without val improvement)
-    device       : 'cuda' or 'cpu'
-    """
+    
 
     def __init__(
         self,
@@ -125,7 +87,7 @@ class PyTorchTrainer:
         loader: DataLoader,
         train:  bool,
     ) -> float:
-        """Run one epoch. Returns mean BCE loss."""
+        
         self.model.train(train)
         total_loss = 0.0
         total_n    = 0
@@ -152,7 +114,7 @@ class PyTorchTrainer:
         X_tr: np.ndarray, y_tr: np.ndarray,
         X_va: np.ndarray, y_va: np.ndarray,
     ) -> None:
-        """Train with early stopping on validation loss."""
+        
         train_ds = TabularDataset(X_tr, y_tr)
         val_ds   = TabularDataset(X_va, y_va)
 
@@ -177,7 +139,7 @@ class PyTorchTrainer:
             if epoch % 5 == 0 or epoch == 1:
                 print(f"{epoch:>6}   {tr_loss:>10.4f}   {va_loss:>10.4f}   {va_acc:>8.4f}")
 
-            # Early stopping
+            
             if va_loss < best_val - 1e-5:
                 best_val   = va_loss
                 no_impr    = 0
@@ -189,7 +151,7 @@ class PyTorchTrainer:
                     print(f"  Early stopping at epoch {epoch} (best={self.best_epoch})")
                     break
 
-        # Restore best weights
+       
         if best_state is not None:
             self.model.load_state_dict(best_state)
 
@@ -198,7 +160,7 @@ class PyTorchTrainer:
         return float(np.mean((proba >= 0.5) == y))
 
     def predict_proba(self, X: np.ndarray) -> np.ndarray:
-        """Return predicted probabilities, shape (n,)."""
+       
         self.model.eval()
         with torch.no_grad():
             Xt  = torch.tensor(X, dtype=torch.float32).to(self.device)
