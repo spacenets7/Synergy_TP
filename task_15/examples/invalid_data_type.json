@@ -1,0 +1,16 @@
+{
+  "device_id": "wearable-001",
+  "session_id": "session-001",
+  "timestamp": "2026-09-09T10:34:00Z",
+  "profile": "wearable_vitals_v1",
+  "readings": {
+    "heart_rate_bpm": "fast",
+    "spo2_percent": 98.0,
+    "body_temperature_c": 36.8
+  },
+  "status": {
+    "battery_percent": 79.0,
+    "signal_quality": "good",
+    "state": "active"
+  }
+}

@@ -1,6 +1,6 @@
 # Synergy Software/ML Taskphase
 
-A progressive collection of Python, data analysis, statistics, and machine-learning assignments completed for the Synergy Software/ML taskphase. The repository starts with development fundamentals, moves through data cleaning and statistical analysis, and finishes with end-to-end ML workflows.
+A progressive collection of Python, data analysis, machine-learning, networking, and backend-integration assignments completed for the Synergy Software/ML taskphase. The repository begins with development fundamentals and progresses through reproducible ML workflows, local-network APIs, and sensor-data ingestion.
 
 ## What is included
 
@@ -19,6 +19,10 @@ A progressive collection of Python, data analysis, statistics, and machine-learn
 | [10](task_10/) | Baseline ML from scratch | Regression, classification, and K-means on air-quality data |
 | [10.5](task_10.5/) | Practical regression | scikit-learn model comparison for sensor-based temperature prediction |
 | [11](task_11/) | Practical classification | 22-class crop recommendation pipeline and inference script |
+| [12](task_12/) | Deployment-oriented ML evaluation | Bitcoin forecasting under temporal shift, anomaly detection, and stress testing |
+| [13](task_13/) | Neural networks | NumPy and PyTorch MLPs compared with logistic regression |
+| [14](task_14/) | Local networking and HTTP APIs | FastAPI echo service, configurable client, and failure experiments |
+| [15](task_15/) | Sensor-data ingestion | Wearable-vitals simulator, validation API, and in-memory device store |
 
 Each task keeps its source code, input data, generated outputs, and detailed notes together. Open a task's README for its methodology and results.
 
@@ -26,7 +30,7 @@ Each task keeps its source code, input data, generated outputs, and detailed not
 
 ```text
 Synergy_TP/
-├── task_1/ ... task_11/   # Individual assignments
+├── task_1/ ... task_15/   # Individual assignments
 │   ├── data/              # Input datasets, where applicable
 │   ├── src/               # Scripts or notebooks
 │   ├── output/            # Generated metrics, reports, and figures
@@ -36,7 +40,7 @@ Synergy_TP/
 └── requirements.txt
 ```
 
-Some report-only tasks contain their PDF and DOCX deliverables directly in the task directory. Task 9.5 and Task 10.5 use Jupyter notebooks as their primary source.
+Some report-only tasks contain their PDF and DOCX deliverables directly in the task directory. Task 9.5 and Task 10.5 use Jupyter notebooks as their primary source. The Task 14 and Task 15 technical reports are distributed separately from their source folders.
 
 ## Setup
 
@@ -59,10 +63,10 @@ source venv/bin/activate
 venv\Scripts\Activate.ps1
 ```
 
-The tasks use different dependency sets and the root `requirements.txt` is not currently consolidated. To run the full repository, install the shared packages:
+Install the consolidated dependencies for the full repository:
 
 ```bash
-python -m pip install requests pandas numpy scipy matplotlib scikit-learn joblib jupyter nbformat
+python -m pip install -r requirements.txt
 ```
 
 Task 2 uses only the Python standard library. Task 9.5 and Task 10 intentionally implement their ML algorithms without scikit-learn.
@@ -92,6 +96,14 @@ python task_10/src/main.py task_10/data/AirQualityUCI.csv task_10/output
 # Inference with the saved crop recommendation model
 python task_11/src/inference.py
 python task_11/src/inference.py --csv path/to/input.csv
+
+# Local-network HTTP service and client
+python -m task_14.server.run
+python -m task_14.client.client health
+
+# Wearable-vitals ingestion backend and simulator
+python -m task_15.backend.run
+python -m task_15.simulator.simulator
 ```
 
 For notebook workflows, open:
@@ -108,6 +120,9 @@ Both notebooks load CSV files by filename, so run them with their respective fil
 - Statistical treatment of replicate measurements, calibration curves, and uncertainty
 - Linear regression, logistic regression, metrics, and K-means implemented from scratch
 - Practical scikit-learn pipelines with saved artifacts and standalone inference
+- NumPy and PyTorch neural networks with baseline and regularization comparisons
+- Local-network HTTP communication with explicit failure diagnostics
+- Validated MedTech sensor ingestion with a configurable simulator
 - Generated reports, plots, predictions, and metrics committed alongside the code
 
 ## Notes
