@@ -36,7 +36,7 @@ np.random.seed(42)
 
 # ── Paths ──────────────────────────────────────────────────────────────────────
 BASE    = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-DATA    = os.path.join(BASE, "Crop_recommendation.csv")
+DATA    = os.path.join(BASE, "data", "Crop_recommendation.csv")
 OUT     = os.path.join(BASE, "output")
 MODELS  = os.path.join(BASE, "models")
 os.makedirs(OUT, exist_ok=True)

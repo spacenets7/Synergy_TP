@@ -15,9 +15,8 @@ pip install pandas numpy matplotlib scikit-learn joblib
 
 ```
 task_11/
-├── Crop_recommendation.csv        ← Input dataset
-├── Task11_Siddeshwar.docx         ← Technical report (DOCX)
-├── Task11_Siddeshwar.pdf          ← Technical report (PDF)
+├── data/
+│   └── Crop_recommendation.csv    ← Input dataset
 ├── README.md                      ← This file
 ├── src/
 │   ├── train.py                   ← Full training pipeline
